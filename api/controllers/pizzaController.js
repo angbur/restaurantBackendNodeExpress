@@ -15,6 +15,8 @@ exports.createPizza = async (req, res) => {
     const pizzaCreate = new PizzaModel({
       name: req.body.name,
       price: req.body.price,
+      ingredients: req.body.ingredients,
+      categories: req.body.categories,
     })
     const newPizza = await pizzaCreate.save()
     res.status(201).json(newPizza)
