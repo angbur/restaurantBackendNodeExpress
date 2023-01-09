@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
     max: 20,
     match: [
       /^[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{2,50}$/,
-      'Pole imię musi zawierać tylko litery',
+      'The first name field must contain letters only',
     ],
   },
   lastName: {
@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     max: 20,
     match: [
       /^[A-Za-zżźćńółęąśŻŹĆĄŚĘŁÓŃ]{2,50}$/,
-      'Pole imię musi zawierać tylko litery',
+      'The last name field must contain letters only',
     ],
   },
   login: {
@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     match: [
       /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
-      'Podano nieprawidłowy adres email',
+      'Incorrect email address provided',
     ],
   },
   password: {
@@ -47,9 +47,9 @@ const userSchema = new mongoose.Schema({
     required: true,
     min: 8,
   },
-})
+});
 
-module.exports = mongoose.models.User || mongoose.model('User', userSchema)
+module.exports = mongoose.models.User || mongoose.model('User', userSchema);
 
 const registerValidation = data => {
   const schema = Joi.object({

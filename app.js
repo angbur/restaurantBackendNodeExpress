@@ -1,9 +1,9 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const app = express()
-const mongoose = require('mongoose')
-const dotenv = require('dotenv')
+const express = require('express');
+const app = express();
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 const pizzaRouter = require('./api/routes/pizzaRoutes');
+const userRouter = require('./api/routes/userRoutes');
 const cors = require('cors');
 
 app.use((req, res, next) => {
@@ -33,6 +33,7 @@ mongoose
 
 app.use(express.json())
 
-app.use('/pizza', pizzaRouter)
+app.use('/pizza', pizzaRouter);
+app.use('/user', userRouter);
 
 module.exports = app
