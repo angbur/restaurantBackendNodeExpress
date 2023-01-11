@@ -103,15 +103,3 @@ exports.updatedUser = async (req, res) => {
         res.status(400).send({message : e.message});
       }
     }
-
-exports.getLoggedInUser = async (req, res) => {
-  let user;
-  try{
-    user = await User.findOne().where('login').equals(req.params.login).select('-password').catch(error=>{
-      throw new Error('There is no user with this login');
-    });
-  } catch (error) {
-    return res.status(400).send({message:error.message});
-  };
-  return res.send(user);
-};

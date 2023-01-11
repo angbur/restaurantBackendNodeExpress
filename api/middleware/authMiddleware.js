@@ -3,9 +3,9 @@ const User = require('../models/user.model');
 
 exports.loggedUser = async (req, res, next) => {
 
-    const token = req.header('auth-token');
+    const token = req.header('Authorization').split(' ')[1];
 
-    if (!token) return res.status(401).send('Access denied. The operation is possible only for a logged in user');
+    if (!token) return res.status(401).send({'message': 'Access denied. The operation is possible only for a logged in user'});
 
     try {
         jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded)=> {
@@ -28,7 +28,10 @@ exports.loggedUser = async (req, res, next) => {
                 throw new Error('No user found!');
             };
         
-            
+            if(req.user._id !== req.params.id) {
+                res.status(403);
+                throw new Error('Access denied. It is not possible to change the data for this user');
+            };
         };
 
         if (req.params.login) {
