@@ -7,13 +7,13 @@ const mongoose = require('mongoose');
 exports.registration = async (req,res) => {
 
     const {error} = registerValidation(req.body)
-     if(error) return res.status(400).send('The data provided does not meet the criteria');
+     if(error) return res.status(400).send({'message': 'The data provided does not meet the criteria'});
  
      const emailExist = await User.findOne({email: req.body.email});
-     if(emailExist) return res.status(400).send('The login/password you entered already exists')
+     if(emailExist) return res.status(400).send({'message': 'The login/password you entered already exists'})
 
      const loginExist = await User.findOne({login: req.body.login});
-     if(loginExist) return res.status(400).send('The login/password you entered already exists')
+     if(loginExist) return res.status(400).send({'message': 'The login/password you entered already exists'})
 
      const salt = await bcrypt.genSalt(10);
      const hashedPassword = await bcrypt.hash(req.body.password, salt)
@@ -43,13 +43,15 @@ exports.registration = async (req,res) => {
 exports.logging = async (req,res) => {
 
     const {error} = loginValidation(req.body)
-     if(error) return res.status(400).send('The data provided does not meet the criteria');
+     if(error) return res.status(400).send({
+      'message': 'The data provided does not meet the criteria',
+     });
 
     const user = await User.findOne({login: req.body.login});
-     if(!user) return res.status(400).send('The login/password you entered does not exist')
+     if(!user) return res.status(400).send({'message': 'The login/password you entered does not exist'})
 
     const validPass = await bcrypt.compare(req.body.password, user.password)
-    if(!validPass) return res.status(400).send('The login/password you entered does not exist')
+    if(!validPass) return res.status(400).send({'message': 'The login/password you entered does not exist'})
 
     const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET)
     res.header('Authorization', `Bearer ${token}`).header('_id',user._id).send({
@@ -71,10 +73,10 @@ exports.getUser = async (req, res) => {
       if (!user)
         return res
           .status(404)
-          .send('The user does not exist');
+          .send({'message': 'The user does not exist'});
       res.status(200).send(user);
     } else {
-      res.status(400).send('Incorrect ID number entered');
+      res.status(400).send({'message': 'Incorrect ID number entered'});
     }
 };
 
@@ -82,7 +84,7 @@ exports.updatedUser = async (req, res) => {
 
     const {error} = updateValidation(req.body);   
 
-    if(error) return res.status(400).send('The data provided does not meet the criteria');
+    if(error) return res.status(400).send({'message': 'The data provided does not meet the criteria'});
 
     try {
       if(req.body.password){
@@ -94,7 +96,7 @@ exports.updatedUser = async (req, res) => {
         const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {new: true}).exec();
     
         if (!updatedUser) {
-          return res.status(400).send('The user specified does not exist');
+          return res.status(400).send({'message': 'The user specified does not exist'});
         }
         res.status(200).send('Data updated');
       } catch (e) {
