@@ -3,7 +3,7 @@ const User = require('../models/user.model');
 
 exports.loggedUser = async (req, res, next) => {
 
-    const token = req.header('Authorization').split(' ')[1];
+    const token = req.header('Authorization') && req.header('Authorization').split(' ')[1];
 
     if (!token) return res.status(401).send({'message': 'Access denied. The operation is possible only for a logged in user'});
 

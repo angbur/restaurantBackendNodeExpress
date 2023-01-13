@@ -74,7 +74,7 @@ exports.getUser = async (req, res) => {
         return res
           .status(404)
           .send({'message': 'The user does not exist'});
-      res.status(200).send(user);
+      res.status(200).send({'data': user});
     } else {
       res.status(400).send({'message': 'Incorrect ID number entered'});
     }

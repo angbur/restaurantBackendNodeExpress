@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const pizzaRouter = require('./api/routes/pizzaRoutes');
 const userRouter = require('./api/routes/userRoutes');
+const orderRouter = require('./api/routes/orderRoutes');
+
 const cors = require('cors');
 
 app.use((req, res, next) => {
@@ -35,5 +37,6 @@ app.use(express.json())
 
 app.use('/pizza', pizzaRouter);
 app.use('/user', userRouter);
+app.use('/order', orderRouter);
 
 module.exports = app
